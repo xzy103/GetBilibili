@@ -12,10 +12,22 @@ os.system('color F2')
 os.system('title Bilibili Download Tool')
 print('感谢原作者 Henry :)')
 print('>>>>>程序启动中...')
-import requests, time, hashlib, urllib.request, re
-import moviepy.editor as mv
+import time
+import hashlib
+import urllib.request
+import re
 import sys
-import easygraphics.dialog as dlg
+try:
+    import requests
+    import moviepy.editor as mv
+    import easygraphics.dialog as dlg
+except ImportError:
+    os.system('echo 缺乏运行所需的第三方库 正在为您安装...')
+    os.system('pip install --user requests moviepy easygraphics')
+    os.system('pause')
+    import requests
+    import moviepy.editor as mv
+    import easygraphics.dialog as dlg
 
 welcome = """在原项目基础上做了以下改变
 - 优化代码结构
@@ -76,11 +88,11 @@ def format_size(bytes):
         M = kb / 1024
         if M >= 1024:
             G = M / 1024
-            return f" {G:.3f} G/s"
+            return f"{G:.3f} G/s"
         else:
-            return f" {M:.3f} M/s"
+            return f"{M:.3f} M/s"
     else:
-        return f" {kb:.2f} K/s"
+        return f"{kb:.2f} K/s"
 
 
 #  下载视频
