@@ -18,17 +18,18 @@ import sys
 import easygraphics.dialog as dlg
 
 welcome = """在原项目基础上做了以下改变
--优化代码结构
--优化提示信息
--调整运行界面风格
--增加图形界面窗口
--删除.mp4选项(格式问题)
--删除第二种进度条显示方式
--显示下载目录信息
--使用最新的requests库
--使用最新的moviepy库
--需要安装easygraphics库
+- 优化代码结构
+- 优化提示信息
+- 调整运行界面风格
+- 增加图形界面窗口
+- 删除.mp4选项(格式问题)
+- 删除第二种进度条显示方式
+- 默认下载到桌面
+- 使用最新的requests库
+- 使用最新的moviepy库
+- 需要安装easygraphics库
 """
+
 
 def get_play_list(start_url, cid, quality):
     entropy = 'rbMCKn@KuamXWlPMoJGsKcbiJKUfkPF_8dABscJntvqhRSETg'
@@ -86,7 +87,7 @@ def format_size(bytes):
 def down_video(video_list, title, start_url, page):
     num = 1
     print(f'>>>>>正在下载P{page}段视频... | <{title}>:') if len(cid_list) > 1 else print('>>>>>下载中...')
-    path = os.path.join(sys.path[0], 'Bilibili_download', title)  # 当前目录作为下载目录
+    path = os.path.join(desktoppath, 'Bilibili_download', title)  # 当前目录作为下载目录
     for u in video_list:
         opener = urllib.request.build_opener()
         opener.addheaders = [
@@ -111,7 +112,7 @@ def down_video(video_list, title, start_url, page):
 
 # 合并视频
 def combine_video(video_list, title):
-    currentVideoPath = os.path.join(sys.path[0], 'bilibili_video', title)  # 当前目录作为下载目录
+    currentVideoPath = os.path.join(desktoppath, 'bilibili_video', title)  # 当前目录作为下载目录
     if len(video_list) >= 2:
         # 视频大于一段才要合并
         print(f'>>>>>下载完成,正在合并...:')
@@ -137,6 +138,7 @@ if __name__ == '__main__':
     print('-' * 30 + 'B站视频下载小助手' + '-' * 30)
     print(welcome)
     print('>>>>>获取视频地址...')
+    desktoppath = os.path.join(os.path.expanduser("~"), 'Desktop')
     start = dlg.get_string(message='请输入您要下载的B站av号或视频链接地址', title='BilibiliDownload')
     start = start if start.isdigit() else re.search(r'/av(\d+)/*', start).group(1)
     start_url = 'https://api.bilibili.com/x/web-interface/view?aid=' + start
@@ -172,7 +174,7 @@ if __name__ == '__main__':
     print(f'用时{round(time.time()-start_time)}s')
 
     # 如果是windows系统，下载完成后打开下载目录
-    currentVideoPath = os.path.join(sys.path[0], 'Bilibili_download')  # 当前目录作为下载目录
+    currentVideoPath = os.path.join(desktoppath, 'Bilibili_download')  # 当前目录作为下载目录
     print(f'文件路径 {currentVideoPath}')
     if sys.platform.startswith('win'):
         flag = dlg.get_yes_or_no(question='是否打开下载目录', title='下载完成')
