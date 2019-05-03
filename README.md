@@ -3,7 +3,7 @@
 感谢原作者 Henry :)
 
 ## 改善
-在原项目基础上做了以下改变  
+>在原项目基础上做了以下改变  
 - 优化代码结构  
 - 优化提示信息  
 - 调整运行界面风格  
@@ -14,9 +14,6 @@
 - 使用最新的requests库  
 - 使用最新的moviepy库  
 - 需要安装easygraphics库  
-
-## 使用
-命令行下`:\>python GetBilibili.py`  
 
 ## 依赖的库
 [requests](https://github.com/kennethreitz/requests)  
