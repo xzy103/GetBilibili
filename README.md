@@ -1,6 +1,6 @@
 # GetBilibili
 原项目地址 https://github.com/Henryhaohao/Bilibili_video_download  
-感谢原作者 Henry :)
+感谢原作者 [Henry](https://github.com/Henryhaohao) :)
 
 ## 改善
 >在原项目基础上做了以下改变  
