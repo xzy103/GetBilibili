@@ -161,6 +161,7 @@ if __name__ == '__main__':
     }
     html = requests.get(start_url, headers=headers).json()
     data = html['data']
+    video_title = data["title"].replace(" ", "_")
     cid_list = []
     if '?p=' in start:
         p = re.search(r'\?p=(\d+)', start).group(1)
@@ -173,24 +174,28 @@ if __name__ == '__main__':
     quality = dlg.get_choice(message=tip, choices=['1080p', '720p', '480p', '360p'], title='BilibiliDownload')
     quality = {'1080p': '80', '720p': '64', '480p': '32', '360p': '16'}[quality]
     os.system('cls')
-    for item in cid_list:
-        cid = str(item['cid'])
-        title = item['part']
-        title = re.sub(r'[/\\:*?"<>|]', '', title)  # 替换为空的
-        page = str(item['page'])
-        start_url = start_url + "/?p=" + page
-        video_list = get_play_list(start_url, cid, quality)
-        start_time = time.time()
-        down_video(video_list, title, start_url, page)
-        combine_video(video_list, title)
-    print(f'用时{round(time.time()-start_time)}s')
-
+    try:
+        for item in cid_list:
+            cid = str(item['cid'])
+            title = item['part']
+            if not title:
+                title = video_title
+            title = re.sub(r'[/\\:*?"<>|]', '', title)  # 替换为空的
+            page = str(item['page'])
+            start_url = start_url + "/?p=" + page
+            video_list = get_play_list(start_url, cid, quality)
+            start_time = time.time()
+            down_video(video_list, title, start_url, page)
+            combine_video(video_list, title)
+        print(f'用时{round(time.time()-start_time)}s')
+    except Exception as e:
+        print(e)
+        input()
     # 如果是windows系统，下载完成后打开下载目录
-    currentVideoPath = os.path.join(desktoppath, 'Bilibili_download')  # 当前目录作为下载目录
+    currentVideoPath = os.path.join(desktoppath, 'Bilibili_download')
     print(f'文件路径 {currentVideoPath}')
     if sys.platform.startswith('win'):
-        flag = dlg.get_yes_or_no(question='是否打开下载目录', title='下载完成')
-        if flag:
-            os.startfile(currentVideoPath)
-            sys.exit()
+        os.startfile(currentVideoPath)
     os.system('pause')
+    sys.exit()
+
